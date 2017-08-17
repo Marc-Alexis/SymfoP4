@@ -1,10 +1,10 @@
 {
-    "name": "flagusdilenocadesme/symfop4",
+    "name": "marcalexis/symfop4",
     "license": "proprietary",
     "type": "project",
     "autoload": {
         "psr-4": {
-            "AppBundle\\": "src/AppBundle"
+            "": "src/"
         },
         "classmap": [
             "app/AppKernel.php",
