@@ -1,0 +1,43 @@
+<img src="{{ image }}" />
+<br/>
+"Récapitulatif de votre réservation :"
+{{ reservation.code }}
+<br/>
+{{ reservation.email }}
+<br/>
+{{ reservation.datereserv|date('d/m/Y') }}
+
+<br/><br/><br/>
+
+<table>
+    <caption>{{ reservation.nbBillets }}Billets :</caption>
+    <thead>
+    <tr>
+        <th>Nom</th>
+        <th>Nationalité</th>
+        <th>Type de billet</th>
+        <th>Prix</th>
+    </tr>
+    </thead>
+    <tfoot>
+    <tr>
+        <th colspan="4">Total</th>
+        <th>
+            {{ reservation.prixtot }}
+        </th>
+    </tr>
+    </tfoot>
+    <tbody>
+
+    {% for billet in reservation.billets %}
+        {#{{ ticket.id }}#}
+        <tr>
+            <td>{{ billet.fullname }}</td>
+            <td>{{ billet.nationalite }}</td>
+            <td>{{ billet.type }}</td>
+            <td>{{ billet.prix }}</td>
+        </tr>
+    {% endfor %}
+
+    </tbody>
+</table>

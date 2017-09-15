@@ -1,0 +1,9 @@
+{% extends 'LouvreBilletBundle:Billet:layout.html.twig' %}
+{% block body %}
+    <h1>Réservation {{ code }} payée</h1>
+
+    <p>Un mail contenant le récapitulatif de votre commande vous a été envoyé à l'adresse suivante "{{ mail }}"</p>
+    <p>Veuillez bien conserver ce mail, il fera foi de billet à l'entrée du musée.</p>
+
+    <a class="btn btn-default" href="{{ path('louvre_billet_homepage') }}">Retourner à l'accueil</a>
+{% endblock %}

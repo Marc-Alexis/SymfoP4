@@ -1,4 +1,17 @@
 services:
-#    louvre_billet.example:
-#        class: Louvre\BilletBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    louvre_billet.prixator:
+        class: Louvre\BilletBundle\Prixator\Prixator
+
+    louvre_billet.stripe:
+        class: Louvre\BilletBundle\Stripe\Stripe
+
+    louvre_billet.mailer:
+        class: Louvre\BilletBundle\MailSender\MailSender
+        arguments:
+            - "@mailer"
+            - "@templating"
+
+    louvre.billet_limitator:
+        class: Louvre\BilletBundle\Limitator\Limitator
+        arguments:
+            - "@doctrine.orm.entity_manager"

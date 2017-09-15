@@ -1,1 +1,23 @@
-Hello World!
+{% extends 'LouvreBilletBundle:Billet:layout.html.twig' %}
+{% block body %}
+    <div class="row">
+        <div class="col-md-12 center-block">
+            {% for message in app.flashes('error') %}
+                <div class="text-center bg-danger">{{ message }}</div>
+            {% endfor %}
+        </div>
+        <div id="content" class="col-md-9">
+                {{ include('@LouvreBillet/Billet/form.html.twig') }}
+        </div>
+        <div id="content" class="col-md-3">
+            <h3>Tarifs indicatifs</h3>
+            <ul class="nav nav-pills nav-stacked well well-lg">
+                <li>Moins de 4 ans : 0€</li>
+                <li>De 4 à 12 ans : 8€</li>
+                <li>12 ans et plus : 16€</li>
+                <li>60 ans et plus : 12€</li>
+                <li>Tarif réduit : 10€</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

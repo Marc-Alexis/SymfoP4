@@ -1,0 +1,21 @@
+{% extends 'LouvreBilletBundle:Billet:layout.html.twig' %}
+{% block body %}
+    <div>
+        <h1>Récapitulatif de votre commande</h1>
+        <p></p>
+    </div>
+
+    <div id="status">
+        <form method="POST">
+            <script
+                    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                    data-key="pk_test_J5jUpVnwIV2e67QSZXN8ibiu"
+                    data-amount="{{ price }}00"
+                    data-name="Musée du Louvre"
+                    data-locale="auto"
+                    data-currency="eur"
+                    data-email="{{ email }}">
+            </script>
+        </form>
+    </div>
+{% endblock %}
