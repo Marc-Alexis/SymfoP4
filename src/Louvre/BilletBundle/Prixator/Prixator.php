@@ -32,6 +32,10 @@ class Prixator
                     case $age >= 60 : $billet->setPrix(12); break;
                 endswitch;
             }
+            if ($billet->getType() == "Demi-Journée") {
+                $prixDemi = $billet->getPrix() / 2;
+                $billet->setPrix($prixDemi);
+            }
             $prixTotal += $billet->getPrix();
         endforeach;
 

@@ -1,10 +1,5 @@
 {% extends 'LouvreBilletBundle:Billet:layout.html.twig' %}
 {% block body %}
-    <div>
-        <h1>Récapitulatif de votre commande</h1>
-        <p></p>
-    </div>
-
     <div id="status">
         <form method="POST">
             <script
@@ -16,6 +11,31 @@
                     data-currency="eur"
                     data-email="{{ email }}">
             </script>
+            <button class="btn btn-success" id="payer">Payer par CB</button>
         </form>
     </div>
+    <div>
+        <h2>Récapitulatif de votre commande</h2>
+        <br>
+        <p>Date prévue de la visite : {{ reserv.datevisite|date('d M Y') }}</p>
+        <p>Mail : {{ email }}</p>
+        <p>Prix Total : {{ price }} €</p>
+        <h4>Votre réservation portant le code {{ reserv.code }} comporte {{ reserv.nbBillets }} {% if reserv.nbBillets <= 1 %} billet : {% else %} billets : {% endif %}</h4>
+        {% set nbr = 1 %}
+        {% for billet in reserv.billets %}
+            <hr>
+            <p><b>Billet #{{ nbr }}</b></p>
+            <p><b>Nom Complet :</b> {{ billet.fullname }}</p>
+            <p><b>Type de billet :</b> {{ billet.type }}</p>
+            <p><b>Prix :</b> {{ billet.prix }} € {% if billet.tarifreduit == true %} (Tarif réduit) {% endif %}</p>
+            {% set nbr = nbr+1 %}
+        {% endfor %}
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.getElementsByClassName("stripe-button-el")[0].style.display = "none";
+    </script>
 {% endblock %}

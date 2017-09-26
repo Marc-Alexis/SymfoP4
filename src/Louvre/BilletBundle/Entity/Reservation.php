@@ -3,6 +3,7 @@
 namespace Louvre\BilletBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Louvre\BilletBundle\Validator\ClosedDates;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -15,6 +16,7 @@ class Reservation
 {
     /**
      * @ORM\OneToMany(targetEntity="Louvre\BilletBundle\Entity\Billet", mappedBy="reservation", cascade={"persist"})
+     * @Assert\Valid
      */
     private $billets;
 
@@ -46,7 +48,9 @@ class Reservation
      * @var \DateTime
      *
      * @ORM\Column(name="datevisite", type="date")
+     * @Assert\NotBlank(message="Ce champ ne peut pas être vide")
      * @Assert\Date()
+     * @ClosedDates()
      */
     private $datevisite;
 

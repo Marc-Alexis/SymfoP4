@@ -21,8 +21,11 @@ class BilletType extends AbstractType
         $builder
             ->add('fullname', TextType::class, array('label' => 'Nom complet'))
             ->add('nationalite', CountryType::class, array('label' => 'Nationalité'))
-            ->add('birthdate', BirthdayType::class, array('label' => 'Date de naissance', 'format' => 'ddMMMMyyyy'))
-            ->add('type', ChoiceType::class, array('label' => 'Type de billet', 'choices' => array('Journée' => 'journee', 'Demi-Journée' => 'demi')))
+            ->add('birthdate', BirthdayType::class, array(
+                'label' => 'Date de naissance',
+                'format' => 'ddMMyyyy',
+                ))
+            ->add('type', ChoiceType::class, array('label' => 'Type de billet', 'choices' => array('Journée' => 'Journée', 'Demi-Journée' => 'Demi-Journée')))
             ->add('tarifreduit', CheckboxType::class, array('label' => 'Tarif Réduit', 'required' => false))
         ;
     }

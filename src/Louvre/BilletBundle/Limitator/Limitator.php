@@ -13,25 +13,38 @@ class Limitator
         $this->em = $em;
     }
 
-    public function underMilleBillets(\DateTime $date, $nbBilletsReserv)
+    public function underMilleBillets(\DateTime $date = null, $nbBilletsReserv)
     {
         $reservsToCheck = $this->em->getRepository('LouvreBilletBundle:Reservation')->getReservationsByDate($date);
         $total = $nbBilletsReserv;
 
-        foreach ($reservsToCheck as $reserv)
-        {
-            $nbBillets = $reserv->getNbBillets();
-            $total += $nbBillets;
-        }
+        if (isset($date) && !empty($date)):
+            foreach ($reservsToCheck as $reserv)
+            {
+                $nbBillets = $reserv->getNbBillets();
+                $total += $nbBillets;
+            }
+        endif;
 
-        if ($total <= 5)
-        {
-            $answer = true;
-        } else {
-            $answer = false;
-        }
-
-        return $answer;
+        return $total;
     }
 
+    public function JourneeClosed(\DateTime $date = null, $billets)
+    {
+        $now = new \DateTime('now');
+        $today = $now->format('d-m-y');
+        $heure = $now->format('h')+2;
+        $datevisite = $date->format('d-m-y');
+
+        foreach ($billets as $billet) {
+            $type = $billet->getType();
+            if ($datevisite == $today && $heure >= 14 && $type == "Journée") {
+                $closed = true;
+                break;
+            } else {
+                $closed = false;
+            }
+        }
+        return $closed;
+    }
 }

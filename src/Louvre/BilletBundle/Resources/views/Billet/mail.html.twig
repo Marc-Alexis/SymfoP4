@@ -1,43 +1,48 @@
-<img src="{{ image }}" />
-<br/>
-"Récapitulatif de votre réservation :"
-{{ reservation.code }}
-<br/>
-{{ reservation.email }}
-<br/>
-{{ reservation.datereserv|date('d/m/Y') }}
+<html>
 
-<br/><br/><br/>
+<head>
+    <title>Vos billets pour le Musée du Louvre</title>
+</head>
 
-<table>
-    <caption>{{ reservation.nbBillets }}Billets :</caption>
-    <thead>
-    <tr>
-        <th>Nom</th>
-        <th>Nationalité</th>
-        <th>Type de billet</th>
-        <th>Prix</th>
-    </tr>
-    </thead>
-    <tfoot>
-    <tr>
-        <th colspan="4">Total</th>
-        <th>
-            {{ reservation.prixtot }}
-        </th>
-    </tr>
-    </tfoot>
-    <tbody>
-
-    {% for billet in reservation.billets %}
-        {#{{ ticket.id }}#}
-        <tr>
-            <td>{{ billet.fullname }}</td>
-            <td>{{ billet.nationalite }}</td>
-            <td>{{ billet.type }}</td>
-            <td>{{ billet.prix }}</td>
-        </tr>
-    {% endfor %}
-
-    </tbody>
-</table>
+<body>
+<div>
+    <div>
+        <div>
+            <img src="{{ image }}" alt="logo">
+        </div>
+        <p>Ce mail contient vos billets d'entrée.<br/>Conservez le, il vous sera demandé à l'entrée du Musée<br/>
+        </p>
+        <hr>
+    </div>
+    <div>
+        <h1>Confirmation d'achat. Merci pour votre commande et bonne visite !</h1>
+        <div>
+            <p>Date de réservation : {{ reservation.datevisite|date('d M Y') }}</p>
+            <p>Code de réservation : {{ reservation.code }}</p>
+            <p>Nombre de billets : {{ reservation.nbBillets }}</p>
+            <p>Prix total : {{ reservation.prixtot }} €</p>
+        </div>
+        <hr>
+        <div>
+            {% set nbr = 1 %}
+            {# For each client, we display last and first names #}
+            {% for billet in reservation.billets %}
+                <div>
+                    <hr>
+                    <p><b>Billet #{{ nbr }}</b></p>
+                    <p><b>Nom Complet :</b> {{ billet.fullname }}</p>
+                    <p><b>Type de billet :</b> {{ billet.type }}</p>
+                    <p><b>Prix :</b> {{ billet.prix }} € {% if billet.tarifreduit == true %} (Tarif réduit) {% endif %}</p>
+                    {% set nbr = nbr+1 %}
+                </div>
+            {% endfor %}
+            <hr>
+        </div>
+        <div>
+            <strong>Veuillez noter qu'un justificatif pourra vous être demandé à l'entrée du Musée.</strong>
+        </div>
+    </div>
+    <br/>
+</div>
+</body>
+</html>

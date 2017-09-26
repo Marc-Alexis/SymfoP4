@@ -16,19 +16,24 @@ class BilletController extends Controller
         $form = $this->get('form.factory')->create(ReservationType::class, $reserv);
         $prixator = $this->get('louvre_billet.prixator');
         $limitator = $this->get('louvre.billet_limitator');
-
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid())
         {
             $datevisite = $reserv->getDatevisite();
+            $billets = $reserv->getBillets();
+            $journeeClosed = $limitator->JourneeClosed($datevisite, $billets);
+
+            $prixator->PrixBirthdate($reserv);
             $nbBilletsReserv = $reserv->getNbBillets();
             $under = $limitator->underMilleBillets($datevisite, $nbBilletsReserv);
 
-            if ($under == false)
+            if ($under > 1000)
             {
                 $request->getSession()->getFlashBag()->add('error', 'Désolé, il ne nous reste plus assez de billets à cette date pour effectuer votre réservation. Veuillez choisir une autre date');
                 return $this->redirectToRoute('louvre_billet_homepage');
+            } elseif ($journeeClosed == true){
+                $request->getSession()->getFlashBag()->add('error', "Désolé, vous ne pouvez plus réserver de billet journée aujourd'hui");
+                return $this->redirectToRoute('louvre_billet_homepage');
             } else {
-                $prixator->PrixBirthdate($reserv);
 
                 $session = new Session();
                 $session->set('reservation', $reserv);
@@ -46,8 +51,11 @@ class BilletController extends Controller
 
     public function paymentAction(Request $request)
     {
-        $session = new Session();
+        $session = $request->getSession();
         $reserv = $session->get('reservation');
+        if ($reserv == null) {
+            return $this->redirectToRoute('louvre_billet_homepage');
+        }
         $price = $reserv->getPrixtot();
         $email = $reserv->getEmail();
         $em = $this->getDoctrine()->getManager();
@@ -69,13 +77,17 @@ class BilletController extends Controller
         return $this->render('LouvreBilletBundle:Billet:payment.html.twig', array(
             'price' => $price,
             'email' => $email,
+            'reserv' => $reserv
         ));
     }
 
-    public function confirmationAction()
+    public function confirmationAction(Request $request)
     {
-        $session = new Session();
+        $session = $request->getSession();
         $reserv = $session->get('reservation');
+        if ($reserv == null) {
+            return $this->redirectToRoute('louvre_billet_homepage');
+        }
         $mail = $reserv->getEmail();
         $code = $reserv->getCode();
         $session->remove('reservation');

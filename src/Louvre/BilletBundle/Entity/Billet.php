@@ -31,9 +31,10 @@ class Billet
     /**
      * @var string
      *
-     * @ORM\Column(name="fullname", type="string", length=255)
-     * @Assert\NotBlank()
-     * @Assert\Length(min="3")
+     * @ORM\Column(name="fullname", type="string", length=255, nullable=false)
+     * @Assert\Length(min=6, minMessage="Votre nom doit contenir au minimum 6 caractères")
+     * @Assert\NotBlank(message="Ce champ ne peut pas être vide")
+     * @Assert\NotNull(message="Ce champ doit contenir du texte")
      */
     private $fullname;
 
